@@ -1,0 +1,6 @@
+# blocks = [(0, 2, 2, "v", False), (0, 3, 2, "h", False), (1, 1, 2, "v", False), (2, 0, 2, "v", False), (2, 2, 2, "h", False), (2, 4, 2, "v", False)]
+# print_board(make_board(blocks))
+# print()
+# for b in get_children(make_board(blocks), blocks):
+#     print_board(b)
+#     print()
