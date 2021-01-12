@@ -1,0 +1,76 @@
+beginning = [None, None, None, None, None, None, None, None, None, None, None, 70, -60, 1, 1, 1, 1, -60, 70, None, None, -60, -60, 1, 1, 1, 1, -60, -60, None, None, 1, 1, 40, 40, 40, 40, 1, 1, None, None, 1, 1, 40, 40, 40, 40, 1, 1, None, None, 1, 1, 40, 40, 40, 40, 1, 1, None, None, 1, 1, 40, 40, 40, 40, 1, 1, None, None, -60, -60, 1, 1, 1, 1, -60, -60, None, None, 70, -60, 1, 1, 1, 1, -60, 70, None, None, None, None, None, None, None, None, None, None]
+mid = [None, None, None, None, None, None, None, None, None, None, None, 70, -60, 40, 40, 40, 40, -60, 70, None, None, -60, -60, 1, 1, 1, 1, -60, -60, None, None, 40, 1, 1, 1, 1, 1, 1, 40, None, None, 40, 1, 1, 1, 1, 1, 1, 40, None, None, 40, 1, 1, 1, 1, 1, 1, 40, None, None, 40, 1, 1, 1, 1, 1, 1, 40, None, None, -60, -60, 1, 1, 1, 1, -60, -60, None, None, 70, -60, 40, 40, 40, 40, -60, 70, None, None, None, None, None, None, None, None, None, None]
+weights = beginning
+
+mstab = 0
+        ostab = 0
+        for i in th:
+            if board[i] == token:
+                if board[11] == token or board[18] == token:
+                    mstab += 1
+                elif i == 12 or i == 17:
+                    mstab -= 1
+            if board[i] == opp:
+                if board[11] == opp or board[18] == opp:
+                    ostab += 1
+                elif i == 12 or i == 17:
+                    ostab -= 1
+        for i in lv:
+            if board[i] == token:
+                if board[11] == token or board[81] == token:
+                    mstab += 1
+                elif i == 21 or i == 71:
+                    mstab -= 1
+            if board[i] == opp:
+                if board[11] == opp or board[81] == opp:
+                    ostab += 1
+                elif i == 21 or i == 71:
+                    ostab -= 1
+        for i in bh:
+            if board[i] == token:
+                if board[88] == token or board[81] == token:
+                    mstab += 1
+                elif i == 21 or i == 71:
+                    mstab -= 1
+            if board[i] == opp:
+                if board[81] == opp or board[88] == opp:
+                    ostab += 1
+                elif i == 82 or i == 87:
+                    ostab -= 1
+        for i in rv:
+            if board[i] == token:
+                if board[88] == token or board[18] == token:
+                    mstab += 1
+                elif i == 28 or i == 78:
+                    mstab -= 1
+            if board[i] == opp:
+                if board[88] == opp or board[18] == opp:
+                    ostab += 1
+                elif i == 28 or i == 78:
+                    ostab -= 1
+        if board[22] == token and board[11] != token:
+            mstab -= 1
+        if board[27] == token and board[18] != token:
+            mstab -= 1
+        if board[72] == token and board[81] != token:
+            mstab -= 1
+        if board[77] == token and board[88] != token:
+            mstab -= 1
+        if board[22] == opp and board[11] != opp:
+            ostab -= 1
+        if board[27] == opp and board[18] != opp:
+            ostab -= 1
+        if board[72] == opp and board[81] != opp:
+            ostab -= 1
+        if board[77] == opp and board[88] != opp:
+            ostab -= 1
+        stab = mstab-ostab
+
+th = [12, 13, 14, 15, 16, 17]
+lv = [21, 31, 41, 51, 61, 71]
+bh = [82, 83, 84, 85, 86, 87]
+rv = [28, 38, 48, 58, 68, 78]
+xs = [22, 27, 72, 77]
+
+#http://play-othello.appspot.com/files/Othello.pdf
+#https://apps.dtic.mil/dtic/tr/fulltext/u2/a106560.pdf
