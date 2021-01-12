@@ -1,0 +1,113 @@
+----------------------------------------------
+General:
+- Helper methods
+    - Def need index to coor and coor to index
+    - Print nicely (for easy viewing)
+- Prob going w/ string representation
+    - Might add in extra data structures as needed
+    - Work in indices but converted to coors when easier for calcs
+----------------------------------------------
+Part 1:
+- Symmetry
+    - Mathematically = 180 deg (about origin)
+        - (a, b) -> (-a, -b)
+        - Screwed up b/c no origin, only start & ends of rows & cols
+    - Need helper method to find "counterpart" after rotation
+    - Thought--can only have odd # of blocked squares if board of odd length
+        - Must be in center square
+        - Related: cannot fill in center of odd board if even blocks
+    - Exploit fact that string will be palindrome
+        - str[0] = str[-1] (or str[n] = str[-(n+1)]
+- Implied filling
+    - Symmetry
+    - Words < 3
+    - Cut off words (from areafill)
+    - Know if need to backtrack if > # blocks total
+    - Recursive/iteratively builds up:
+        - Each block placement leads to others
+- Part of horizontal and vertical
+    - Indices adjacent to blocked squares:
+        1. Every time new blocked square is placed, check up & down
+        2. If 1 in either direction is not blocked, check right & left
+- All connected
+    - Use modified flood fill algorithm (AreaFill):
+        - Only check half of board
+        1. Choose 1st block & mark w/ special char
+        2. In all 4 dirs (l, r, u, d), check that block is neither block nor checked
+        3. Change to checked char if not block
+        4. Check that no block chars in checked str
+- Overall
+    - Fill in letters
+    - Check if board is odd w/ odd # of blocking
+        - Place in center if blocking
+    - backtrack with args board, dimensions of board, # blocks remaining
+        - end when # blocks remaining = 0
+        - find 1st available block
+        - call implied blocks
+        - fill in all blocks
+        - recur
+-------------------------------------------------------------------------
+Part 2:
+- Dictionary Processing
+    - One loop through whole file
+    - Calculate letter and word length freq
+        - Letter freq for each word length
+        - Use both to calc constrained
+    - Need (obviously) list of possible words
+        - Dict w/ word length as key
+        - For short words (len <= 6), also keep track of fragments
+            - Algorithm:
+              1. Given str, make set
+              2. For each let in str, create list of lists w/ [0 = let of str, 1 = -]
+              3. W/ # nested loops = # lets in str, add all possible combos to set
+                -> hardcode this part
+- Keeping track of word blanks -> do once at beginning and keep updating
+    - Needs:
+        - Actual "blank" on board
+        - Start index
+        - Orientation
+        - Quickly update "blanks" when new word placed
+     - Data structures:
+        - List of lists = [0 = "blank", 1 = start index, 2 = dir]
+        - Dict look ups for updating:
+            - Find affected indices:
+                - Key = index of word blank in master list
+                - Vals = indices on board
+            - Find affected word "blanks" -> called by above dict
+                - Key = index on board
+                - Vals = indices of word blanks in master list
+- Filling words
+    - From list of unfilled blanks:
+        - Determine length of least frequency
+            - From unfilled blanks of least frequency:
+                - Determine blank w/ lowest non-zero (i.e. not all blanks) let freq -> chose blank
+    - With chosen blank:
+        - If not completely empty:
+            - From list of possible words of given length:
+                - Check for matching w/ already-filled letters
+                - Determine avg let freq -> chose highest avg 1st
+                    - Return list sorted by decreasing avg freq
+    - Update
+        - Board representation
+            - Use blank to index
+            - Keep track of indices changed
+        - Other blanks
+            - Use blank to index then index to blank
+            - If word filled, check that is a possibility -> return None if failure
+-------------------------------------------------------------------------------------------
+Part 3:
+- Overhead processing of implied squares
+    - Find "-" in board after word placing, given blocks symmetry, center blocking done
+        - Only needs to be done for 1/2 of board
+    - Dict w/ key = index, val = list[indices of implied squares]
+    - No need to redo w/ each recursive call
+- Keep track of possible spots for blocks
+    - Initial = list of locations of "-"
+        - Generated directly from implied lookup
+    - Update as implied blocks filled
+    - Pass w/ board
+- Word length
+    - Average of all blanks on board
+        - Lower is better
+    - Score after placing all implied blocks
+    - Same regex and length counting method as in Part 2
